@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 
+		接口绑定  ： 将接口中的方法和对应的sql声明进行绑定
+		namespeace 必须是那个要绑定的类的全路径
+		那么方法名就是id
+		那么接口中方法中传入的参数就可以通过 #{0} 0 表示参数位置 其实真正的参数名 是 param1 param2
+		
+		接口绑定的参数可以 动过索引的方式获取索引从1 开始 param1
+	 -->
+<mapper namespace="com.et.lesson03.returnMap.xml.GradeMapper">
+  <resultMap type="grade" id="gradeMap" autoMapping="false">
+  			<!-- 列和属性的关系 如果是主键使用id 非主键使用result -->
+  	<id column="gid" property="gid"/>
+  	<!--  <result column="gid" property="gid"/>-->
+	<result column="gname" property="gname1"/>  
+  </resultMap>
+
+  <!-- 用于映射一对多 -->
+    <resultMap type="grade" id="gradeOne" autoMapping="false">
+  			<!-- 列和属性的关系 如果是主键使用id 非主键使用result -->
+  	<id column="gid" property="gid"/>
+  	<!--  <result column="gid" property="gid"/>-->
+	<result column="gname" property="gname1"/>  
+	<!--studentList是属性名  一对多 其中studentList是集合所以要用collection-->
+	<collection property="studentList" column="gid" javaType="arraylist" select="com.et.lesson03.returnMap.xml.StudentMapper.queryStudentByGid">
+	
+	</collection>
+  </resultMap>
+  
+  
+  
+  	<select id="queryAllGrade" resultMap="gradeMap">
+     select * from grade
+  	</select>
+
+	<select id="queryGradeByGid" resultMap="gradeMap">
+     select * from grade where gid=#{gid}
+  </select>
+  <!-- 1对多   查询某个班级下的多个学生
+  	select * from student where gid=当前的gid
+   -->
+  <select id="queryGrade" resultMap="gradeOne">
+   select * from grade where gid=#{gid}
+
+  </select>
+  
+  
+</mapper>

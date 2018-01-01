@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 
+		接口绑定  ： 将接口中的方法和对应的sql声明进行绑定
+		namespeace 必须是那个要绑定的类的全路径
+		那么方法名就是id
+		那么接口中方法中传入的参数就可以通过 #{0} 0 表示参数位置 其实真正的参数名 是 param1 param2
+		
+		接口绑定的参数可以 动过索引的方式获取索引从1 开始 param1
+	 -->
+<mapper namespace="com.et.lesson03.returnMap.xml.StudentMapper">
+  
+ <!-- 映射多对一的关系 -->
+  <resultMap type="student" id="studentMap" autoMapping="true">
+	<id column="studentid" property="studentId"/>  
+	<!-- 关联班级   association这是属性    fetchType="lazy" 延迟加载-->
+	<association  fetchType="lazy" property="grade" column="gid" select="com.et.lesson03.returnMap.xml.GradeMapper.queryGradeByGid"></association>
+  </resultMap>
+
+	<select id="queryStudent" resultMap="studentMap">
+     select * from student where studentid=#{0}
+  	</select>
+
+	<select id="queryStudentByGid" resultType="student">
+     select * from student where gid=#{0}
+  	</select>
+</mapper>

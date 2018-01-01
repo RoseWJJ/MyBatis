@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 
+		接口绑定  ： 将接口中的方法和对应的sql声明进行绑定
+		namespeace 必须是那个要绑定的类的全路径
+		那么方法名就是id
+		那么接口中方法中传入的参数就可以通过 #{0} 0 表示参数位置 其实真正的参数名 是 param1 param2
+		
+		接口绑定的参数可以 动过索引的方式获取索引从1 开始 param1
+	 -->
+<mapper namespace="proc">
+  <!-- jdbc调用存储过程语法
+  		{call 存储过程名（？，？）}
+  		jdbc调用存函数语法
+  		{?=call 函数名（？，？）}
+   -->
+  <select id="call_prg" resultType="java.util.Map" statementType="CALLABLE">
+    {call prg_add(
+	#{p1,mode=IN,jdbcType=NUMERIC},
+	#{P2,mode=IN,jdbcType=NUMERIC},
+	#{result,mode=OUT,jdbcType=NUMERIC})}
+  </select>
+
+
+  <select id="call_fun" resultType="java.util.Map" statementType="CALLABLE">
+     {#{result,mode=OUT,javaType=NUMERIC})call prg_add(
+		#{p1,mode=IN,jdbcType=NUMERIC},
+		#{P2,mode=IN,jdbcType=NUMERIC},
+		#{result,mode=OUT,jdbcType=NUMERIC})}
+  </select>
+  
+</mapper>

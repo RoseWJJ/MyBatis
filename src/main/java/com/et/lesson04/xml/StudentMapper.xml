@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 
+		接口绑定  ： 将接口中的方法和对应的sql声明进行绑定
+		namespeace 必须是那个要绑定的类的全路径
+		那么方法名就是id
+		那么接口中方法中传入的参数就可以通过 #{0} 0 表示参数位置 其实真正的参数名 是 param1 param2
+		
+		接口绑定的参数可以 动过索引的方式获取索引从1 开始 param1
+	 -->
+<mapper namespace="com.et.lesson04.xml.StudentMapper">
+  	<!--if判断条件是否满足，就if中的sql 自动拼接到主sql-->
+	<select id="queryStudent" resultType="student">
+     select * from student  
+     <where>
+     <if test="sName!=null">
+     	and sname like '%${sName}%'
+     </if>
+      <if test="address!=null">
+     	and address like '%${address}%'
+     </if>
+     </where>
+  	</select>
+
+	
+	<select id="queryStudentBySex" resultType="student">
+     select * from student   
+   	<!--<where> -->
+   	  <trim prefix="where" prefixOverrides="and">
+   	  <choose>
+   	 	<when test="sex!=null">
+   	 		and sex=#{sex}
+   	 	</when>
+   	 	<otherwise>
+   	 	    and sex=1
+   	 	</otherwise>
+   	 	
+   	 </choose>
+   	<!-- </where> -->
+   	</trim>
+  	</select>
+  	
+  	<update id="updateStudent">
+  	 update student 
+  	 <trim prefix="set" prefixOverrides="" suffix="" suffixOverrides=",">
+  	 <if test="sName!=null">
+  	 	sname=#{sName},
+  	 </if>
+  	 <if test="age!=null">
+  	 	age=#{age},
+  	 </if >
+  	
+  	 <if test="address!=null">
+  	 address=#{address}
+  	 </if>
+  	 </trim> 
+  	 where studentid = #{studentId}
+  	
+  	</update>
+  	
+  	<select id="querySudentByGrade" resultType="student">
+  		select * from student 
+  		
+  		<foreach item="gid" collection="gradeList" open="where gid in(" close=")" separator=",">
+	  		${gid}
+  		</foreach>
+	
+  	</select>
+  	
+  	
+</mapper>

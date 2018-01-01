@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 
+		接口绑定  ： 将接口中的方法和对应的sql声明进行绑定
+		namespeace 必须是那个要绑定的类的全路径
+		那么方法名就是id
+		那么接口中方法中传入的参数就可以通过 #{0} 0 表示参数位置 其实真正的参数名 是 param1 param2
+		
+		接口绑定的参数可以 动过索引的方式获取索引从1 开始 param1
+	 -->
+<mapper namespace="com.et.lesson02.xml.FoodMapper">
+  
+  <select id="query" resultType="map">
+        select * from food 
+  </select>
+  <select id="queryByName" resultType="food">
+        select * from food where foodname like #{0}
+  </select>
+  <select id="queryByName2" resultType="food">
+        select * from food where foodname like '%${foodname}%'
+  </select>
+   <delete id="delete"  parameterType="int">
+        delete from food where foodid=#{0}
+  </delete>
+  <insert id="add" >
+  		insert into food values(FOOD_SEC.NEXTVAL,#{0},#{1})
+  </insert>
+  <update id="update" >
+  		update food set price=#{1} where foodname=#{0}
+  </update>
+  <!-- 获取主键的测试 -->
+  <insert id="saveFood" parameterType="food" >
+   <!-- selectkey 在程序中获取主键  主键是通过序列的下一个生成的所以-->
+   		<selectKey keyProperty="foodid" order="BEFORE" statementType="STATEMENT" resultType="int">
+   		<!-- 
+   			如何将查到的主键写回去？ 那么只需要将主键放到foodid 及传入参数的那个对象的主键，或者能够 作为主键的传入参数  
+   		 	根据属性 keyProperty="" order="BEFORE" 的意思是在insert语句执行之前查出 主键的值，
+   		 	statementType="STATEMENT"
+   		  -->
+   			select FOOD_SEC.NEXTVAL FROM DUAL
+   		</selectKey>
+  		insert into food values(#{foodid},#{foodname},#{price})
+  
+  </insert>
+  
+</mapper>

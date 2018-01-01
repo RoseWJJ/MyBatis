@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 命名空间用于区分多个文件中能想通的id
+		比如 a.xml（namespace=a）
+		b.xml （namespace=b）
+	 -->
+<mapper namespace="a">
+  
+  <select id="select" resultType="map">
+        select * from food 
+  </select>
+  <select id="getUserById" resultType="java.util.Map">
+        select * from food where foodname=#{foodname} and price=#{price}
+  </select>
+   <select id="getUserById2" resultType="java.util.Map">
+        select * from food where foodname='${foodname}' and price=${price}
+  </select>
+  <insert id="saveFood">
+  		insert into food values(FOOD_SEC.NEXTVAL,#{foodname},#{price})
+  	
+  </insert>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+</mapper>

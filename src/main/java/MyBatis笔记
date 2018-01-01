@@ -1,0 +1,91 @@
+log4j日志分为5种级别
+		debug	调试（开发阶段）
+  		warn	警告消息
+ 		error	程序错误消息
+		fatal	系统错误消息
+		通过5种级别输出的日志，打印在文件中
+日志级别	
+fatal>error>warn>info>debug 所有全局控制中设置的级别以下的所有日志都不打印，比如，设置info，
+不打印debug   fatal 前面四个日志都不会打印
+------------------
+ mybatis 为我们提供了两种支持动态 sql 的语法：#{} 以及 ${}。
+使用#{键}方式      实际上是使用站位符
+使用{} el表达式方式   会把值替换 就像 字符串拼接 会出现错误 少了单引号  要自己加
+-------------------
+接口映射
+接口映射的两种方式： xml(少个编译的过程建议使用)和 注解.
+
+typeAliases 类型别名是为java类型设置一个短的名字  他只和xml配置有缘 存在的意义 仅仅在于用来减少类完全限定名的冗余
+mybatis自定义java类型     别名在TypeAliasRegistry这个类中
+举例如下：
+ registerAlias("string", String.class);
+
+    registerAlias("byte", Byte.class);
+    registerAlias("long", Long.class);
+    registerAlias("short", Short.class);
+    registerAlias("int", Integer.class);
+    registerAlias("integer", Integer.class);
+    registerAlias("double", Double.class);
+    registerAlias("float", Float.class);
+    registerAlias("boolean", Boolean.class);
+
+    registerAlias("byte[]", Byte[].class);
+    registerAlias("long[]", Long[].class);
+    registerAlias("short[]", Short[].class);
+    registerAlias("int[]", Integer[].class);
+    registerAlias("integer[]", Integer[].class);
+    registerAlias("double[]", Double[].class);
+    registerAlias("float[]", Float[].class);
+    registerAlias("boolean[]", Boolean[].class);
+
+    registerAlias("_byte", byte.class);
+    registerAlias("_long", long.class);
+    registerAlias("_short", short.class);
+    registerAlias("_int", int.class);
+    registerAlias("_integer", int.class);
+    registerAlias("_double", double.class);
+    registerAlias("_float", float.class);
+    registerAlias("_boolean", boolean.class);
+
+    registerAlias("_byte[]", byte[].class);
+    registerAlias("_long[]", long[].class);
+    registerAlias("_short[]", short[].class);
+    registerAlias("_int[]", int[].class);
+    registerAlias("_integer[]", int[].class);
+    registerAlias("_double[]", double[].class);
+    registerAlias("_float[]", float[].class);
+    registerAlias("_boolean[]", boolean[].class);
+
+    registerAlias("date", Date.class);
+    registerAlias("decimal", BigDecimal.class);
+    registerAlias("bigdecimal", BigDecimal.class);
+    registerAlias("biginteger", BigInteger.class);
+    registerAlias("object", Object.class);
+
+    registerAlias("date[]", Date[].class);
+    registerAlias("decimal[]", BigDecimal[].class);
+    registerAlias("bigdecimal[]", BigDecimal[].class);
+    registerAlias("biginteger[]", BigInteger[].class);
+    registerAlias("object[]", Object[].class);
+
+    registerAlias("map", Map.class);
+    registerAlias("hashmap", HashMap.class);
+    registerAlias("list", List.class);
+    registerAlias("arraylist", ArrayList.class);
+    registerAlias("collection", Collection.class);
+    registerAlias("iterator", Iterator.class);
+
+    registerAlias("ResultSet", ResultSet.class);
+想要自己取别名就要到mybatis.xml配置文件中添加
+<typeAliases>
+	<typeAlias alias="food" type="com.et.lesson02.xml.Food"/>
+   
+ </typeAliases>
+MyBatis 结果集映射 就是 数据库列名和实体类中的属性名不一致时，要建立的某种关系；为了使其能够匹配就要使用结果集映射
+结果集映射返回的结果是相同的 还是那个实体类 只是多了一层关系；
+要将resultType="" 换成resultMap="" 
+当然 resultMap 要自己定义
+<resultMap type="grade" id="gradeMap"></resultMap>
+  <select id="queryAllGrade" resultMap="gradeMap">
+     select * from grade
+  </select>
